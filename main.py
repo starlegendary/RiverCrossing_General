@@ -1,14 +1,13 @@
-def checkall( f, ls):
+def checkall( f, ls): #some commonly used function
     return sum(list(map(f,ls))) == len(ls)
 def checkone(f, ls):
     for i in ls: 
         if f(i): return True
     return False
 def bfs(src,tar, toaction, tonext, tofood, isequal):
-    def env(node):
+    def env(node): #Define Environment 
         result = ['','']
         i_side,j_side, i,j  = toside(node,human)
-
         for m in j_side:
           if(m in tofood.keys()):
               if(tofood[m] in j_side):
@@ -20,14 +19,14 @@ def bfs(src,tar, toaction, tonext, tofood, isequal):
     while q != []:
         currpath = q.pop(0)
         currnode = currpath[-1]
-
+        #Get last node of the path in a queue
         if not checkone(lambda x: isequal(currnode,x), explored):
-            allaction = toaction(currnode)
-            explored.append(currnode)
-
+            allaction = toaction(currnode) #Get all next movement
+            explored.append(currnode) #Add to is explored
+            
             for action in allaction:
-                nextnode = env(tonext(currnode, action))
-                nextpath = list(currpath) + [nextnode]
+                nextnode = env(tonext(currnode, action)) #state action
+                nextpath = list(currpath) + [nextnode] #add state to record
 
                 if(isequal(nextnode,tar)): 
                     return nextpath
