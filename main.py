@@ -5,15 +5,17 @@ def checkone(f, ls):
         if f(i): return True
     return False
 def bfs(src,tar, toaction, tonext, tofood, isequal):
-    def env(node): #Define Environment 
-        result = ['','']
-        i_side,j_side, i,j  = toside(node,human)
-        for m in j_side:
-          if(m in tofood.keys()):
-              if(tofood[m] in j_side):
-                  j_side = j_side.replace(tofood[m],'')
-        result[i],result[j] = i_side, j_side
-        return result
+    def env(tofood): #Define Environment 
+        def inner(node):
+            result = ['','']
+            i_side,j_side, i,j  = toside(node,human)
+            for m in j_side:
+              if(m in tofood.keys()):
+                  if(tofood[m] in j_side):
+                      j_side = j_side.replace(tofood[m],'')
+            result[i],result[j] = i_side, j_side
+            return result
+        return inner
     explored = []
     q = [[src]]
     while q != []:
@@ -25,7 +27,7 @@ def bfs(src,tar, toaction, tonext, tofood, isequal):
             explored.append(currnode) #Add to is explored
             
             for action in allaction:
-                nextnode = env(tonext(currnode, action)) #state action
+                nextnode = env(tofood)(tonext(currnode, action)) #state action
                 nextpath = list(currpath) + [nextnode] #add state to record
 
                 if(isequal(nextnode,tar)): 
